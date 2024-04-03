@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import OmegleLogo from "../assets/Omegle2.png"
-import { FaFacebookF, FaTwitter } from "react-icons/fa6"
-import { FcGoogle } from "react-icons/fc"
-import { FaSortDown } from "react-icons/fa"
+// import { FaFacebookF, FaTwitter } from "react-icons/fa6"
+// import { FcGoogle } from "react-icons/fc"
+// import { FaSortDown } from "react-icons/fa"
 import { useChat } from '../contextApi/ChatContext'
 import styled from 'styled-components'
 
@@ -85,25 +85,25 @@ const ButtonsGroup = styled.div({
     gap: "10px"
 })
 
-const Button = styled.button({
-    fontSize: "10px",
-    color: "white",
-    background: "#4A549A",
-    border: "none",
-    borderRadius: "2px",
-    display: "flex",
-    gap: "5px",
-    alignItems: "center"
-})
+// const Button = styled.button({
+//     fontSize: "10px",
+//     color: "white",
+//     background: "#4A549A",
+//     border: "none",
+//     borderRadius: "2px",
+//     display: "flex",
+//     gap: "5px",
+//     alignItems: "center"
+// })
 
-const SelectButton = styled.button({
-    padding: "2px 10px",
-    border: "1px solid gray",
-    borderRadius: "2px",
-    display: "flex",
-    alignItems: "center",
-    gap: "5px"
-})
+// const SelectButton = styled.button({
+//     padding: "2px 10px",
+//     border: "1px solid gray",
+//     borderRadius: "2px",
+//     display: "flex",
+//     alignItems: "center",
+//     gap: "5px"
+// })
 
 const LiveUsersWrapper = styled.div({
     marginTop: "5px",
@@ -112,11 +112,11 @@ const LiveUsersWrapper = styled.div({
     alignItems: "center"
 })
 
-const LiveUsersNumber = styled.p({
-    fontSize: "25px",
-    color: "#9DB2D7"
-})
+// const LiveUsersNumber = styled.p({
+//     fontSize: "25px",
+//     color: "#9DB2D7"
+// })
 
-const LiveUsersText = styled.p({
-    color: "#b6d1f0"
-})
+// const LiveUsersText = styled.p({
+//     color: "#b6d1f0"
+// })

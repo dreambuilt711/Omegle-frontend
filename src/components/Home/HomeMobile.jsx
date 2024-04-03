@@ -2,14 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 
 const HomeMobile = ({ setIsTermsModal }) => {
+
+    const [setIsModal, setIsModalVideo] = setIsTermsModal;
+
     return (
         <MobileHome className='mobileHome'>
             <VideoDescText>Mobile video chat is an experimental new feature. Video is monitored, so keep it clean!
             </VideoDescText>
             <AdultSite>Go to <Link>an adult site</Link> if that's what you want, and you are 18 or older.</AdultSite>
             <ButtonWrapper>
-                <Button className='textBtn' onClick={() => setIsTermsModal(true)}>Start a chat</Button>
-                <Button className='videoBtn'>video</Button>
+                <Button className='textBtn' onClick={() => setIsModal(true)}>Start a chat</Button>
+                <Button className='videoBtn' onClick={() => setIsModalVideo(true)}>video</Button>
             </ButtonWrapper>
 
             <div>
@@ -18,8 +21,8 @@ const HomeMobile = ({ setIsTermsModal }) => {
             </div>
 
             <CollegeStudentBox>
-                <PlayIcon>►</PlayIcon>
-                <p><strong>College student</strong> chat</p>
+                {/* <PlayIcon>►</PlayIcon> */}
+                {/* <p><strong>College student</strong> chat</p> */}
             </CollegeStudentBox>
 
             <AboutOmegleText>

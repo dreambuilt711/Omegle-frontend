@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import usaFlag from "../../assets/usaFlag.jpg";
 
 const HomeDesktop = ({ setIsTermsModal }) => {
+
+    const [setIsModal, setIsModalVideo] = setIsTermsModal;
+
     return (
         <DesktopHome className='homeDesktop'>
             <NoAppNeedText>You don't need an app to use Omegle on your phone or tablet! The web site works great on mobile.
@@ -39,9 +42,9 @@ const HomeDesktop = ({ setIsTermsModal }) => {
                 <div>
                     <ButtonsLabel>Start Chating:</ButtonsLabel>
                     <ButtonsWrapper>
-                        <Button className='textBtn' onClick={() => setIsTermsModal(true)}>Text</Button>
+                        <Button className='textBtn' onClick={() => setIsModal(true)}>Text</Button>
                         <p>or</p>
-                        <Button className='videoBtn' onClick={() => setIsTermsModal(true)}>Video</Button>
+                        <Button className='videoBtn' onClick={() => setIsModalVideo(true)}>Video</Button>
                     </ButtonsWrapper>
                 </div>
             </HomeBottom>

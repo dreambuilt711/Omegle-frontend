@@ -5,12 +5,15 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const MessageInput = () => {
-    const { userId, onlineUsers, isSearching, setIsSearching, receiver, setReceiver, setMessages, isSending, setIsSending, message, setMessage, setIsTyping } = useChat()
+    const { userId, chatType, onlineUsers, isSearching, setIsSearching, receiver, setReceiver, setMessages, isSending, setIsSending, message, setMessage, setIsTyping } = useChat()
 
     const newChat = () => {
+        console.log(userId)
         setIsSearching(true)
         setMessages([])
-        socket.emit("pairing-user", userId, (error) => {
+        setIsSending(false)
+        socket.emit("pairing-user", userId, chatType, (error) => {
+            console.log(error);
             return
         })
         return () => {
@@ -58,7 +61,7 @@ const MessageInput = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (userId && onlineUsers.find((user) => user.userId === userId)) {
+        if (userId && onlineUsers.find((user) => user._id === userId)) {
             newChat()
         } else {
             navigate("/")

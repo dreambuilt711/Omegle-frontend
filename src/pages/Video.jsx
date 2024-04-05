@@ -5,11 +5,14 @@ import styled from "styled-components"
 import { useChat } from "../contextApi/ChatContext"
 import Messages from "../components/Chat/Messages"
 import MessageInput from "../components/Chat/MessageInput"
+import Peer from "simple-peer"
+import { socket } from '../Socket';
 
 const Video = () => {
-    const { receiver } = useChat()
+    const { receiver, userStream } = useChat()
     const myVideo = useRef(null)
-    const strangerVideo = useRef(null)
+    const userVideo = useRef(null)
+    const connectionRef = useRef();
     const [stream, setStream] = useState();
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({
@@ -24,7 +27,26 @@ const Video = () => {
     },[])
     useEffect(() => {
         myVideo.current.srcObject = stream
+        // const my_peer = new Peer({ initiator: false, trickle: false, stream });
+        // my_peer.on('stream', (currentStream) => {
+
+        // })
     }, [stream])
+    useEffect(() => {
+        if ( receiver && stream ) {
+            const peer = new Peer({ initiator: false, trickle: false, stream });
+            peer.on('signal', (data) => {
+                socket.emit('callUser', { signal: data, to: receiver });
+            });
+        }
+    },[receiver])
+    useEffect(() => {
+        const peer = new Peer({ initiator: false, trickle: false, stream});
+        peer.on('stream', (currentStream) => {
+            userVideo.current.srcObject = currentStream;
+        })
+        peer.signal(userStream);
+    },[userStream])
     return (
         <>
             {receiver && receiver !== "" ?
@@ -37,7 +59,7 @@ const Video = () => {
             }
             <Wrapper>
                 <VideoWrapper>
-                    <Camera ref={strangerVideo}></Camera>
+                    <Camera ref={userVideo}></Camera>
                     <Camera ref={myVideo}></Camera>
                 </VideoWrapper>
                 <MessageWrapper>

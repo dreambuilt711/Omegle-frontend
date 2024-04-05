@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { IoClose } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useChat } from '../../contextApi/ChatContext';
 
 const TermsModalVideo = ({ setIsTermsModalVideo }) => {
     const [check1, setCheck1] = useState(false);
     const [check2, setcheck2] = useState(false);
     const [check3, setcheck3] = useState(false);
+    const { setChatType } = useChat()
     const navigate = useNavigate()
 
     const navigateToChat = () => {
@@ -22,6 +24,7 @@ const TermsModalVideo = ({ setIsTermsModalVideo }) => {
             video: true
         })
         .then(function() {
+            setChatType(1);
             setcheck3(!check3);
         })
         .catch(function(err) {

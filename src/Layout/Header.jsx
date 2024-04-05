@@ -11,7 +11,6 @@ const Header = () => {
     const { onlineUsers, receiver, setIsTyping, setMessage, setReceiver } = useChat()
 
     useEffect(() => {
-        console.log(receiver)
         if (receiver !== undefined && !onlineUsers.find((user) => user.userId === receiver)) {
             setIsTyping(false)
             setMessage("")

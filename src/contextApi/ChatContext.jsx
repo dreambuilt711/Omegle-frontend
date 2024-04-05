@@ -4,6 +4,7 @@ const ChatContext = createContext();
 
 const ChatContextProvider = ({ children }) => {
     const [userId, setUserId] = useState();
+    const [chatType, setChatType] = useState(0);
     const [isSearching, setIsSearching] = useState(true);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -12,11 +13,14 @@ const ChatContextProvider = ({ children }) => {
     const [isTyping, setIsTyping] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [message, setMessage] = useState("");
+    const [userStream, setUserStream] = useState(null);
 
     return (
         <>
             <ChatContext.Provider
                 value={{
+                    chatType,
+                    setChatType,
                     userId,
                     setUserId,
                     messages,
@@ -34,7 +38,9 @@ const ChatContextProvider = ({ children }) => {
                     isSending,
                     setIsSending,
                     message,
-                    setMessage
+                    setMessage,
+                    userStream,
+                    setUserStream
                 }}
             >
                 {children}

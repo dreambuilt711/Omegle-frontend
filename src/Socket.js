@@ -3,8 +3,7 @@ import { io } from 'socket.io-client';
 import { useChat } from './contextApi/ChatContext';
 // import beepSound from "./assets/ping-82822.mp3"
 
-// const URL = process.env.REACT_APP_BASE_URL
-const URL = 'http://localhost:8080'
+const URL = process.env.REACT_APP_BASE_URL
 
 export const socket = io(URL, {
     autoConnect: false,

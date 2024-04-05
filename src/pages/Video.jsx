@@ -9,44 +9,78 @@ import Peer from "simple-peer"
 import { socket } from '../Socket';
 
 const Video = () => {
-    const { receiver, userStream } = useChat()
+    const { receiver, caller, signal } = useChat()
     const myVideo = useRef(null)
     const userVideo = useRef(null)
-    const connectionRef = useRef();
+    const connectionRef = useRef()
     const [stream, setStream] = useState();
+    const [callAccepted, setCallAccepted] = useState(false);
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({
             audio: true,
             video: true
         }).then((stream) => {
             setStream(stream);
-            console.log(stream)
         }).catch((error) => {
             console.log(error)
         })
     },[])
     useEffect(() => {
         myVideo.current.srcObject = stream
-        // const my_peer = new Peer({ initiator: false, trickle: false, stream });
-        // my_peer.on('stream', (currentStream) => {
-
-        // })
     }, [stream])
     useEffect(() => {
-        if ( receiver && stream ) {
-            const peer = new Peer({ initiator: false, trickle: false, stream });
-            peer.on('signal', (data) => {
-                socket.emit('callUser', { signal: data, to: receiver });
-            });
+        if ( signal ) {
+            setCallAccepted(true);
+            answerCall()
+        } else {
+            setCallAccepted(false)
         }
-    },[receiver])
-    useEffect(() => {
-        const peer = new Peer({ initiator: false, trickle: false, stream});
+    },[signal])
+    const callUser = (_id) => {
+        const peer = new Peer({ initiator: true, trickle: false, stream });
+        peer.on('signal', (data) => {
+            socket.emit('callUser', data, _id, (error) => {
+                console.log(error)
+            });
+        });
         peer.on('stream', (currentStream) => {
-            userVideo.current.srcObject = currentStream;
-        })
-        peer.signal(userStream);
-    },[userStream])
+          userVideo.current.srcObject = currentStream;
+        });
+        socket.on('callAccepted', (signal) => {
+            setCallAccepted(true);
+            peer.signal(signal);
+        });
+        connectionRef.current = peer;
+    };
+    const answerCall = () => {
+        console.log(stream)
+        const peer = new Peer({ initiator: false, trickle: false, stream });
+        console.log(peer)
+        console.log(signal)
+        peer.on('signal', (data) => {
+          socket.emit('answerCall', { signal: data, to: receiver});
+        });
+        peer.on('stream', (currentStream) => {
+          userVideo.current.srcObject = currentStream;
+        });
+        peer.signal(signal);
+        connectionRef.current = peer;
+    };
+    useEffect(() => {
+        if ( receiver && caller && stream) {
+            if (caller === 'sender') {
+                callUser(receiver);
+            }
+        }
+        console.log(receiver)
+        console.log(connectionRef.current)
+        if ( !receiver ) {
+            if ( connectionRef.current ) {
+                connectionRef.current.destroy()
+                window.location.reload();
+            }
+        }
+    },[receiver, caller, stream])
     return (
         <>
             {receiver && receiver !== "" ?
@@ -59,8 +93,10 @@ const Video = () => {
             }
             <Wrapper>
                 <VideoWrapper>
-                    <Camera ref={userVideo}></Camera>
-                    <Camera ref={myVideo}></Camera>
+                    {
+                        receiver && <Camera ref={userVideo} autoPlay playsInline></Camera>    
+                    }
+                    <Camera ref={myVideo} autoPlay muted playsInline></Camera>
                 </VideoWrapper>
                 <MessageWrapper>
                     <Messages />

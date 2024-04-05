@@ -10,11 +10,11 @@ const ChatContextProvider = ({ children }) => {
     const [messages, setMessages] = useState([]);
     const [isConnected, setIsConnected] = useState(false);
     const [receiver, setReceiver] = useState();
+    const [caller, setCaller] = useState();
     const [isTyping, setIsTyping] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [message, setMessage] = useState("");
-    const [userStream, setUserStream] = useState(null);
-
+    const [signal, setSignal] = useState();
     return (
         <>
             <ChatContext.Provider
@@ -31,6 +31,8 @@ const ChatContextProvider = ({ children }) => {
                     setIsConnected,
                     receiver,
                     setReceiver,
+                    caller,
+                    setCaller,
                     isSearching,
                     setIsSearching,
                     isTyping,
@@ -39,8 +41,8 @@ const ChatContextProvider = ({ children }) => {
                     setIsSending,
                     message,
                     setMessage,
-                    userStream,
-                    setUserStream
+                    signal,
+                    setSignal
                 }}
             >
                 {children}

@@ -3,7 +3,8 @@ import { io } from 'socket.io-client';
 import { useChat } from './contextApi/ChatContext';
 // import beepSound from "./assets/ping-82822.mp3"
 
-const URL = process.env.REACT_APP_BASE_URL
+// const URL = process.env.REACT_APP_BASE_URL
+const URL = 'http://localhost:8080'
 
 export const socket = io(URL, {
     autoConnect: false,
@@ -11,7 +12,7 @@ export const socket = io(URL, {
 });
 
 const Socket = () => {
-    const { setUserId, setIsConnected, setMessages, setOnlineUsers, setReceiver, setIsSearching, setIsTyping, setMessage, setIsSending, setUserStream } = useChat()
+    const { setUserId, setIsConnected, setMessages, setOnlineUsers, setReceiver, setIsSearching, setIsTyping, setMessage, setIsSending, setCaller, setSignal } = useChat()
 
     useEffect(() => {
         socket.connect();
@@ -64,11 +65,14 @@ const Socket = () => {
             setIsSending(false)
         });
 
-        socket.on("user-paired", (receiver) => {
+        socket.on("user-paired", (receiver, type) => {
             setReceiver(receiver)
+            setCaller(type)
             setIsSearching(false)
         })
-
+        socket.on('get-video-stream', (signal) => {
+            setSignal(signal)
+        });
         socket.on("chat-close", () => {
             setReceiver("")
             setMessage("")
@@ -82,9 +86,7 @@ const Socket = () => {
         socket.on("typing stop", () => {
             setIsTyping(false)
         })
-        socket.on("get-video-stream", (stream) => {
-            setUserStream(stream)
-        })
+
 
         return () => {
             socket.off("get-online-users");

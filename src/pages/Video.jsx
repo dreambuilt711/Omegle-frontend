@@ -46,6 +46,9 @@ const Video = () => {
         peer.on('stream', (currentStream) => {
           userVideo.current.srcObject = currentStream;
         });
+        peer.on('close', () => {
+            socket.off("callAccepted");
+        })
         socket.on('callAccepted', (signal) => {
             setCallAccepted(true);
             peer.signal(signal);
@@ -53,16 +56,16 @@ const Video = () => {
         connectionRef.current = peer;
     };
     const answerCall = () => {
-        console.log(stream)
         const peer = new Peer({ initiator: false, trickle: false, stream });
-        console.log(peer)
-        console.log(signal)
         peer.on('signal', (data) => {
           socket.emit('answerCall', { signal: data, to: receiver});
         });
         peer.on('stream', (currentStream) => {
           userVideo.current.srcObject = currentStream;
         });
+        peer.on('close', () => {
+            socket.off("callAccepted");
+        })
         peer.signal(signal);
         connectionRef.current = peer;
     };
@@ -72,12 +75,9 @@ const Video = () => {
                 callUser(receiver);
             }
         }
-        console.log(receiver)
-        console.log(connectionRef.current)
         if ( !receiver ) {
             if ( connectionRef.current ) {
                 connectionRef.current.destroy()
-                window.location.reload();
             }
         }
     },[receiver, caller, stream])

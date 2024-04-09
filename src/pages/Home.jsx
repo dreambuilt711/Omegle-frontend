@@ -19,8 +19,8 @@ const Home = () => {
             })
         }
 
-        if (receiver) {
-            socket.emit("chat-close", receiver, () => {
+        if (receiver?.socketId) {
+            socket.emit("chat-close", receiver?.socketId, () => {
                 setReceiver("")
                 setIsTyping(false)
                 setMessage("")

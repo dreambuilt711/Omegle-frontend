@@ -11,10 +11,10 @@ const Header = () => {
     const { onlineUsers, receiver, setIsTyping, setMessage, setReceiver } = useChat()
 
     useEffect(() => {
-        if (receiver !== undefined && !onlineUsers.find((user) => user.userId === receiver)) {
+        if (receiver?.socketId !== undefined && !onlineUsers.find((user) => user._id === receiver?.socketId)) {
             setIsTyping(false)
             setMessage("")
-            setReceiver("")
+            setReceiver(null)
         }
     }, [onlineUsers]);
 

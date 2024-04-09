@@ -56,7 +56,7 @@ const Messages = () => {
 
     return (
         <MessagesContainer id='savedchat' className='messagesContainer' ref={messagesRef}>
-            {!isSearching && !receiver && receiver !== "" && (
+            {!isSearching && !receiver && (
                 <>
                     <WelcomeText className='welcomeText'>Omegle : talk to strangers</WelcomeText>
                     <StartButton className='startBtnSmall' onClick={newChat}>Start a new conversation</StartButton>
@@ -68,7 +68,7 @@ const Messages = () => {
                 <div key={index} className={message?.stranger ? "strangerWrapper" : "youWrapper"}>
                     <MessageBox className={message?.stranger ? "strangerBox" : "youBox"}>
                         <p className='messageBy' style={{ color: message?.stranger ? "red" : "blue", fontWeight: "bold" }}>
-                            {message?.stranger ? "Stranger :" : "You :"}
+                            {message?.stranger ? receiver.username : "You :"}
                         </p>
                         <p>{message?.stranger ? message.stranger : message.you}</p>
                     </MessageBox>
@@ -81,7 +81,7 @@ const Messages = () => {
             {isSearching && <p className='loadingText loadingTextMobile'>Connecting to server...</p>}
             {isSearching && <p className='loadingText loadingTextDesktop'>Looking for someone you can chat with...</p>}
             {
-                !isSearching && !receiver && receiver === "" &&
+                !isSearching && !receiver &&
                 <>
                     <StrangerDisconnected className='disconnectText disconnectedTextMobile'>Stranger has disconnected.</StrangerDisconnected>
                     <StrangerDisconnectedDesktop className='disconnectText disconnectedTextDesktop'>Your conversational partner has disconnected</StrangerDisconnectedDesktop>

@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useChat } from './contextApi/ChatContext';
-// import beepSound from "./assets/ping-82822.mp3"
+import { apiUrl } from './constant/constant';
+import { toast } from 'react-toastify';
 
-const URL = process.env.REACT_APP_BASE_URL
-
-export const socket = io(URL, {
+export const socket = io(apiUrl, {
     autoConnect: false,
     reconnectionAttempts: 3
 });
 
 const Socket = () => {
-    const { setUserId, setIsConnected, setMessages, setOnlineUsers, setReceiver, setIsSearching, setIsTyping, setMessage, setIsSending, setCaller, setSignal } = useChat()
+    const { user, setUserId, setIsConnected, setMessages, setOnlineUsers, setReceiver, setIsSearching, setIsTyping, setMessage, setIsSending, setCaller, setSignal } = useChat()
 
     useEffect(() => {
         socket.connect();
@@ -41,6 +40,16 @@ const Socket = () => {
     }, [setIsConnected]);
 
     useEffect(() => {
+        if(user) {
+            socket.emit("new-online-user", user._id, (error) => {
+                if (error) {
+                    return toast.warn(error)
+                }
+            })
+        }
+    },[user]);
+
+    useEffect(() => {
         socket.on('get-user-id', (_id) => {
             setUserId(_id);
         })
@@ -65,7 +74,8 @@ const Socket = () => {
         });
 
         socket.on("user-paired", (receiver, type) => {
-            setReceiver(receiver)
+            console.log(JSON.parse(receiver));
+            setReceiver(JSON.parse(receiver))
             setCaller(type)
             setIsSearching(false)
         })
@@ -73,7 +83,7 @@ const Socket = () => {
             setSignal(signal)
         });
         socket.on("chat-close", () => {
-            setReceiver("")
+            setReceiver(null)
             setMessage("")
             setIsTyping(false)
         })

@@ -1,10 +1,11 @@
-import Home from './pages/Home';
 import './App.css';
 import Header from './Layout/Header';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Chat from './pages/Chat';
+import { BrowserRouter } from 'react-router-dom';
 import Socket from './Socket';
-import Video from './pages/Video';
+import CustomRoutes from './routes';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -12,12 +13,9 @@ function App() {
       <Socket />
       <Header />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/video" element={<Video />} />
-        </Routes>
+        <CustomRoutes />
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

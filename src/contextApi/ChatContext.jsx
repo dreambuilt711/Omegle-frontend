@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 const ChatContext = createContext();
 
 const ChatContextProvider = ({ children }) => {
+    const [user, setUser] = useState();
     const [userId, setUserId] = useState();
     const [chatType, setChatType] = useState(0);
     const [isSearching, setIsSearching] = useState(true);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [messages, setMessages] = useState([]);
     const [isConnected, setIsConnected] = useState(false);
-    const [receiver, setReceiver] = useState();
+    const [receiver, setReceiver] = useState(null);
     const [caller, setCaller] = useState();
     const [isTyping, setIsTyping] = useState(false);
     const [isSending, setIsSending] = useState(false);
@@ -19,6 +20,8 @@ const ChatContextProvider = ({ children }) => {
         <>
             <ChatContext.Provider
                 value={{
+                    user,
+                    setUser,
                     chatType,
                     setChatType,
                     userId,

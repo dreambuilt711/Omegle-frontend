@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import usaFlag from "../../assets/usaFlag.jpg";
+import { useChat } from '../../contextApi/ChatContext';
 
 const HomeDesktop = ({ setIsTermsModal }) => {
-
+    const {setUser} = useChat()
     const [setIsModal, setIsModalVideo] = setIsTermsModal;
-
+    const [logged, setLogged] = useState(false)
+    useEffect(() => {
+        const user = sessionStorage.getItem('logged_user');
+        if ( user ) {
+            setUser(JSON.parse(user));
+            setLogged(true)
+        }
+    },[])
     return (
         <DesktopHome className='homeDesktop'>
             <NoAppNeedText>You don't need an app to use Omegle on your phone or tablet! The web site works great on mobile.
@@ -40,12 +49,22 @@ const HomeDesktop = ({ setIsTermsModal }) => {
                 </div>
 
                 <div>
-                    <ButtonsLabel>Start Chating:</ButtonsLabel>
-                    <ButtonsWrapper>
-                        <Button className='textBtn' onClick={() => setIsModal(true)}>Text</Button>
-                        <p>or</p>
-                        <Button className='videoBtn' onClick={() => setIsModalVideo(true)}>Video</Button>
-                    </ButtonsWrapper>
+                    <ButtonsLabel>Let's jump!</ButtonsLabel>
+                    {
+                        logged
+                        ? (
+                            <ButtonsWrapper>
+                                <Button className='textBtn' onClick={() => setIsModal(true)}>Text</Button>
+                                <p>or</p>
+                                <Button className='videoBtn' onClick={() => setIsModalVideo(true)}>Video</Button>
+                            </ButtonsWrapper>
+                        )
+                        : (
+                            <ButtonsWrapper>
+                                <Button className='textBtn'><Link to="/login">Login</Link></Button>
+                            </ButtonsWrapper>
+                        )
+                    }
                 </div>
             </HomeBottom>
 

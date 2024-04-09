@@ -9,9 +9,9 @@ const Chat = () => {
 
     return (
         <>
-            {receiver && receiver !== "" ?
+            {receiver?.socketId ?
                 <Helmet>
-                    <title>Omegle: Connected to stranger</title>
+                    <title>Omegle: Connected to {receiver.username}</title>
                 </Helmet> :
                 <Helmet>
                     <title>Omegle: Talk to strangers!</title>

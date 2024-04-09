@@ -8,10 +8,11 @@ const MessageInput = () => {
     const { userId, chatType, onlineUsers, isSearching, setIsSearching, receiver, setReceiver, setMessages, isSending, setIsSending, message, setMessage, setIsTyping } = useChat()
 
     const newChat = () => {
-        console.log(userId)
         setIsSearching(true)
         setMessages([])
         setIsSending(false)
+        console.log(userId)
+        console.log(chatType)
         socket.emit("pairing-user", userId, chatType, (error) => {
             console.log(error);
             return
@@ -25,15 +26,15 @@ const MessageInput = () => {
         if (isSending) return
         if (message === "") return
         setIsSending(true)
-        socket.emit("send-message", receiver, message, () => {
+        socket.emit("send-message", receiver?.socketId, message, () => {
             setMessage("")
         })
     }
 
     const disconnectChat = () => {
-        if (receiver) {
-            socket.emit("chat-close", receiver, () => {
-                setReceiver("")
+        if (receiver?.socketId) {
+            socket.emit("chat-close", receiver.socketId, () => {
+                setReceiver(null)
                 setIsTyping(false)
                 setMessage("")
             })
@@ -52,9 +53,9 @@ const MessageInput = () => {
 
     const typingHandle = (e) => {
         if (e.target.value !== "") {
-            socket.emit("typing", receiver)
+            socket.emit("typing", receiver?.socketId)
         } else {
-            socket.emit("typing stop", receiver)
+            socket.emit("typing stop", receiver?.socketId)
         }
     }
 

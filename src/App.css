@@ -86,6 +86,34 @@
 .disconnectText2Desktop {
   display: flex
 }
+.authincation-content {
+  background: #f9e1c6;
+  max-width: 540px;
+  width:100%;
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  border-radius: 5px;
+}
+.auth-form {
+  padding: 50px 50px;
+}
+@media only screen and (max-width:1024px) {
+  .left-background {
+    display: none;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .auth-form {
+    padding: 30px;
+  }
+}
+.auth-form .btn {
+  height: 50px;
+  font-weight: 700;
+}
+.auth-form .page-back {
+  display: inline-block;
+  margin-bottom: 15px;
+}
 
 @media (max-width:600px) {
 

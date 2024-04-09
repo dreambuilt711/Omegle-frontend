@@ -68,7 +68,7 @@ const Messages = () => {
                 <div key={index} className={message?.stranger ? "strangerWrapper" : "youWrapper"}>
                     <MessageBox className={message?.stranger ? "strangerBox" : "youBox"}>
                         <p className='messageBy' style={{ color: message?.stranger ? "red" : "blue", fontWeight: "bold" }}>
-                            {message?.stranger ? receiver.username : "You :"}
+                            {message?.stranger ? (receiver?.username ? receiver.username+" :" : "Stranger: ") : "You :"}
                         </p>
                         <p>{message?.stranger ? message.stranger : message.you}</p>
                     </MessageBox>

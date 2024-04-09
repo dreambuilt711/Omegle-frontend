@@ -19,7 +19,7 @@ const AuthenticateRoutes = () => {
 
 const UnAuthenticateRoutes = () => {
     const {user, setUser} = useChat()
-    const logged_user = sessionStorage.getItem('logged_user');
+    const logged_user = window.sessionStorage.getItem('logged_user');
     if ( user ) {
         return <Navigate to="/" />;
     } else {
@@ -32,7 +32,27 @@ const UnAuthenticateRoutes = () => {
     }
 }
 
+const AdminUnAuthenticateRoutes = () => {
+    const user = window.sessionStorage.getItem('admin_user');
+    if (user) {
+        return <Navigate to="/admin" />;
+    } else {
+        return <Outlet />;
+    }
+}
+
+const AdminAuthenticateRoutes = () => {
+    const user = window.sessionStorage.getItem('admin_user');
+    if ( user ) {
+        return <Outlet />;
+    } else {
+        return <Navigate to="/admin/login" />
+    }
+}
+
 export {
     AuthenticateRoutes,
-    UnAuthenticateRoutes
+    UnAuthenticateRoutes,
+    AdminUnAuthenticateRoutes,
+    AdminAuthenticateRoutes
 }

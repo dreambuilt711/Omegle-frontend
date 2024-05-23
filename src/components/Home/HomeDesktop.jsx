@@ -5,7 +5,7 @@ import usaFlag from "../../assets/usaFlag.jpg";
 import { useChat } from '../../contextApi/ChatContext';
 
 const HomeDesktop = ({ setIsTermsModal }) => {
-    const {setUser} = useChat()
+    const {setUser, setInterests} = useChat()
     const [setIsModal, setIsModalVideo] = setIsTermsModal;
     const [logged, setLogged] = useState(false)
     useEffect(() => {
@@ -30,12 +30,10 @@ const HomeDesktop = ({ setIsTermsModal }) => {
                 If you prefer, you can add your interests, and Omegle will look for someone who's into some of the same things as you instead of someone completely random.
             </SameInteretsText>
 
-            <AgeLimitText>By using Omegle, you accept the terms at the bottom.You must be 18 + or 13 + with parental permission.
-            </AgeLimitText>
+            <AgeLimitText>By using Omegle, you accept the terms at the bottom.You must be 18 + or 13 + with parental permission.</AgeLimitText>
 
             <VideoMonitoringBox>
-                <VideoMonitoringText>Video is monitored.Keep it clean!
-                </VideoMonitoringText>
+                <VideoMonitoringText>Video is monitored.Keep it clean!</VideoMonitoringText>
                 {/* <UnmoderatedSection>
                     <AgeText>18+:</AgeText>
                     <UnmoderatedSectionText>{`(Adult) (Unmoderated Section)`}</UnmoderatedSectionText>
@@ -45,7 +43,7 @@ const HomeDesktop = ({ setIsTermsModal }) => {
             <HomeBottom>
                 <div>
                     <InputLabel>What do you wanna talk about?</InputLabel>
-                    <Input type='text' placeholder='Add your interests(optional)' disabled />
+                    <Input type='text' placeholder='Add your interests(optional)' onChange={(e) => setInterests(e.target.value)} />
                 </div>
 
                 <div>
@@ -79,7 +77,6 @@ const HomeDesktop = ({ setIsTermsModal }) => {
 export default HomeDesktop
 
 const DesktopHome = styled.div({
-    width: "720px",
     padding: "10px",
     margin: "15px auto",
     border: "1px solid #CCC",
@@ -143,20 +140,20 @@ const VideoMonitoringText = styled.p({
     fontWeight: "600"
 })
 
-const UnmoderatedSection = styled.div({
-    display: "flex",
-    gap: "10px"
-})
+// const UnmoderatedSection = styled.div({
+//     display: "flex",
+//     gap: "10px"
+// })
 
-const AgeText = styled.strong({
-    fontSize: "12px"
-})
+// const AgeText = styled.strong({
+//     fontSize: "12px"
+// })
 
-const UnmoderatedSectionText = styled.p({
-    color: "blue",
-    fontSize: "12px",
-    textDecoration: "underline"
-})
+// const UnmoderatedSectionText = styled.p({
+//     color: "blue",
+//     fontSize: "12px",
+//     textDecoration: "underline"
+// })
 
 const HomeBottom = styled.div({
     marginBottom: "10px",
@@ -171,13 +168,12 @@ const InputLabel = styled.div({
 })
 
 const Input = styled.input({
-    textAlign: "center",
+    textAlign: "left",
     fontSize: "19px",
     padding: "14px",
     width: "330px",
     border: "1px solid #CCC",
     borderRadius: "2px",
-    cursor: "not-allowed"
 })
 
 const ButtonsLabel = styled.p({
@@ -202,19 +198,19 @@ const Button = styled.button({
     borderRadius: "4px"
 })
 
-const CollegeStudentBox = styled.div({
-    padding: "8px",
-    width: "330px",
-    background: "rgb(238, 238, 238)",
-    border: "1px solid rgb(204, 204, 204)",
-    borderRadius: "8px",
-    display: "flex",
-    justifyContent: "space-around",
-    position: "relative"
-})
+// const CollegeStudentBox = styled.div({
+//     padding: "8px",
+//     width: "330px",
+//     background: "rgb(238, 238, 238)",
+//     border: "1px solid rgb(204, 204, 204)",
+//     borderRadius: "8px",
+//     display: "flex",
+//     justifyContent: "space-around",
+//     position: "relative"
+// })
 
-const PlayIcon = styled.p({
-    position: "absolute",
-    left: "20px",
-    top: "2px"
-})
+// const PlayIcon = styled.p({
+//     position: "absolute",
+//     left: "20px",
+//     top: "2px"
+// })

@@ -6,6 +6,7 @@ const ChatContextProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [userId, setUserId] = useState();
     const [chatType, setChatType] = useState(0);
+    const [interests, setInterests] = useState('');
     const [isSearching, setIsSearching] = useState(true);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -22,10 +23,12 @@ const ChatContextProvider = ({ children }) => {
                 value={{
                     user,
                     setUser,
-                    chatType,
-                    setChatType,
                     userId,
                     setUserId,
+                    chatType,
+                    setChatType,
+                    interests,
+                    setInterests,
                     messages,
                     setMessages,
                     onlineUsers,

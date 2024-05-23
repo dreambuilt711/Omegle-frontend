@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useChat } from '../../contextApi/ChatContext';
 
 const HomeMobile = ({ setIsTermsModal }) => {
-
+    const {setInterests} = useChat()
     const [setIsModal, setIsModalVideo] = setIsTermsModal;
 
     return (
@@ -17,7 +18,7 @@ const HomeMobile = ({ setIsTermsModal }) => {
 
             <div>
                 <InputLabel>Meet strangers with your interests!</InputLabel>
-                <Input type="text" placeholder='Add your interests (optional)' disabled />
+                <Input type="text" placeholder='Add your interests (optional)' onChange={(e) => setInterests(e.target.value)} />
             </div>
 
             <CollegeStudentBox>
@@ -37,7 +38,8 @@ export default HomeMobile
 
 const MobileHome = styled.div({
     marginTop: "16px",
-    border: "1px solid #CCC"
+    border: "1px solid #CCC",
+
 })
 
 const VideoDescText = styled.div({
@@ -78,12 +80,13 @@ const InputLabel = styled.div({
     paddingBottom: "5px"
 })
 
-const Input = styled.div({
+const Input = styled.input({
     fontSize: "15px",
     width: "98%",
     padding: "8px 4px",
     border: "1px solid #dddada",
-    borderRadius: "5px"
+    borderRadius: "5px",
+    textAlign: 'left'
 })
 
 const CollegeStudentBox = styled.div({
@@ -97,11 +100,11 @@ const CollegeStudentBox = styled.div({
     position: "relative"
 })
 
-const PlayIcon = styled.p({
-    position: "absolute",
-    left: "10px",
-    top: "0px"
-})
+// const PlayIcon = styled.p({
+//     position: "absolute",
+//     left: "10px",
+//     top: "0px"
+// })
 
 const AboutOmegleText = styled.div({
     lineHeight: "22px",

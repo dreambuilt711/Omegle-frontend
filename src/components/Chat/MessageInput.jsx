@@ -5,15 +5,14 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const MessageInput = () => {
-    const { userId, chatType, onlineUsers, isSearching, setIsSearching, receiver, setReceiver, setMessages, isSending, setIsSending, message, setMessage, setIsTyping } = useChat()
+    const { userId, chatType, interests, onlineUsers, isSearching, setIsSearching, receiver, setReceiver, setMessages, isSending, setIsSending, message, setMessage, setIsTyping } = useChat()
 
     const newChat = () => {
         setIsSearching(true)
         setMessages([])
         setIsSending(false)
-        console.log(userId)
-        console.log(chatType)
-        socket.emit("pairing-user", userId, chatType, (error) => {
+        console.log(interests)
+        socket.emit("pairing-user", userId, chatType, interests, (error) => {
             console.log(error);
             return
         })
@@ -95,14 +94,13 @@ export default MessageInput
 
 const InputWrapper = styled.div({
     display: 'flex',
-    gap: "5px"
+    gap: "5px",
 })
 
 const Button = styled.button({
     fontSize: "20px",
     fontWeight: "500",
     minWidth: "fit-content",
-    width: "7%",
     padding: "16px",
     border: "1px solid #CCC",
     borderRadius: "2px"
@@ -117,7 +115,6 @@ const Input = styled.input({
 
 const SendButton = styled.button({
     fontSize: '20px',
-    width: "7%",
     padding: "16px",
     border: "1px solid #b3aeae",
     borderRadius: "2px"

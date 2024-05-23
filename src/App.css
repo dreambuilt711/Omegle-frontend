@@ -52,7 +52,8 @@
 }
 
 .videoBtn {
-  background: rgb(206, 205, 205)
+  background: linear-gradient(to bottom, #eb8686 25%, #ff5c5c 50%, #fe0101 100%);
+  cursor: pointer;
 }
 
 .strangerBox,
@@ -174,7 +175,7 @@ input:checked ~ span:last-child {
   }
 
   .messageInputWrapper {
-    margin: 0px;
+    margin: 5px;
     position: absolute;
     bottom: 0;
     left: 0;

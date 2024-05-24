@@ -107,7 +107,9 @@ export default Messages
 
 const MessagesContainer = styled.div({
     padding: "10px",
-    height: "71vh",
+    height: "100%",
+    maxHeight: 'calc(100vh - 175px)',
+    minHeight: '75vh',
     overflowY: "scroll"
 })
 

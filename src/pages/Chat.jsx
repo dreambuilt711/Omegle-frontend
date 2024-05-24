@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import Messages from '../components/Chat/Messages';
 import MessageInput from '../components/Chat/MessageInput';
 import { useChat } from '../contextApi/ChatContext';
+import styled from 'styled-components';
 
 const Chat = () => {
     const { receiver } = useChat()
@@ -17,11 +18,21 @@ const Chat = () => {
                     <title>Omegle: Talk to strangers!</title>
                 </Helmet>
             }
-            <Messages />
-            <MessageInput />
+            <MessageWrapper>
+                <Messages />
+                <MessageInput />
+            </MessageWrapper>
         </>
 
     )
 }
 
 export default Chat
+
+const MessageWrapper = styled.div({
+    width:"100%",
+    height: 'calc(100vh - 70px)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+})

@@ -74,7 +74,6 @@ const Socket = () => {
         });
 
         socket.on("user-paired", (receiver, type) => {
-            console.log(JSON.parse(receiver));
             setReceiver(JSON.parse(receiver))
             setCaller(type)
             setIsSearching(false)

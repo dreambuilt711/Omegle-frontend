@@ -131,6 +131,9 @@ input:checked ~ span:last-child {
   .disconnectText2Desktop {
     display: none;
   }
+  .videoWrapper {
+    flex-direction: column !important;
+  }
 
   .loadingTextMobile,
   .disconnectedTextMobile {
@@ -166,20 +169,22 @@ input:checked ~ span:last-child {
     margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     background: #FFF7EE;
   }
 
   .sendBtn {
     display: none;
   }
+  .v-videoWrapper {
+    width: 100% !important;
+  }
 
   .messageInputWrapper {
     margin: 5px;
-    position: absolute;
+    /*position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 0;*/
   }
 
   .inputBox {

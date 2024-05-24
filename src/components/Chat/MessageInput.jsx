@@ -11,7 +11,6 @@ const MessageInput = () => {
         setIsSearching(true)
         setMessages([])
         setIsSending(false)
-        console.log(interests)
         socket.emit("pairing-user", userId, chatType, interests, (error) => {
             console.log(error);
             return
@@ -109,7 +108,7 @@ const Button = styled.button({
 const Input = styled.input({
     fontSize: "18px",
     padding: "16px",
-    width: "80%",
+    width: "100%",
     borderRadius: "2px"
 })
 

@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
+import {Link} from 'react-router-dom';
 import OmegleLogo from "../assets/Omegle2.png"
 // import { FaFacebookF, FaTwitter } from "react-icons/fa6"
 // import { FcGoogle } from "react-icons/fc"
 // import { FaSortDown } from "react-icons/fa"
+import { TbLogout } from "react-icons/tb";
 import { useChat } from '../contextApi/ChatContext'
 import styled from 'styled-components'
 
 const Header = () => {
 
-    const { onlineUsers, receiver, setIsTyping, setMessage, setReceiver } = useChat()
-
+    const { user, setUser, onlineUsers, receiver, setIsTyping, setMessage, setReceiver } = useChat()
+    const [admin, setAdmin] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     useEffect(() => {
         if (receiver?.socketId !== undefined && !onlineUsers.find((user) => user._id === receiver?.socketId)) {
             setIsTyping(false)
@@ -17,34 +20,84 @@ const Header = () => {
             setReceiver(null)
         }
     }, [onlineUsers]);
-
+    useEffect(() => {
+        const url = window.location.href;
+        const pathname = new URL(url).pathname;
+        const segment = pathname.split('/')[1];
+        if ( segment === 'admin' ) setIsAdmin(true);
+        const tmpAdmin = window.sessionStorage.getItem('admin_user');
+        if (tmpAdmin) setAdmin(tmpAdmin);
+    },[])
+    const handleLogout = () => {
+        setUser(null);
+        window.sessionStorage.removeItem('logged_user');
+        window.location.reload();
+    }
+    const handleAdminLogout = () => {
+        window.sessionStorage.removeItem('admin_user');
+        window.location.reload();
+    }
     return (
-        <HeaderContainer className="header">
-            <LogoWrapper className='logoWrapper'>
-                <Image src={OmegleLogo} alt="Omegle Logo" />
+        <Fragment>
+            {
+                isAdmin
+                ? (
+                    <HeaderContainer className="header">
+                        <LogoWrapper className='logoWrapper'>
+                            <Image src={OmegleLogo} alt="Omegle Logo" />
+                            <NavWrapper className='rotatedText'>
+                                <li className="mr-3">
+                                    <Link to="/admin" className="inline-block py-2 px-4 font-semibold text-gray-600 no-underline hover:text-gray-200 hover:text-underline">Users</Link>
+                                </li>
+                                <li className="mr-3">
+                                    <Link to="/admin/interests" className="inline-block text-gray-600 font-semibold no-underline hover:text-gray-200 hover:text-underline py-2 px-4">Interests</Link>
+                                </li>
+                            </NavWrapper>
+                        </LogoWrapper>
 
-                <HeaderText className='rotatedText'>Talk to strangers!</HeaderText>
-            </LogoWrapper>
+                        <HeaderRight className='headerRight'>
+                            <LiveUsersWrapper>
+                                {
+                                    admin && <Button onClick={handleAdminLogout}><TbLogout size={24} /></Button>
+                                }
+                            </LiveUsersWrapper>
+                        </HeaderRight>
+                        <HeaderRight className='headerMobileRight'>
 
-            <HeaderRight className="headerRight">
-                <ButtonsGroup>
-                    {/* <Button style={{ background: "#4A549A" }}><FaFacebookF />
-                        Share</Button>
-                    <Button style={{ background: "#728EC5" }}><FaTwitter />
-                        Tweet</Button>
-                    <SelectButton>
-                        <FcGoogle />
-                        Choose a language
-                        <FaSortDown />
-                    </SelectButton> */}
-                </ButtonsGroup>
-                <LiveUsersWrapper>
-                    {/* <LiveUsersNumber>{onlineUsers.length} +</LiveUsersNumber>
-                    <LiveUsersText>Live users</LiveUsersText> */}
-                </LiveUsersWrapper>
-            </HeaderRight>
+                        </HeaderRight>
+                    </HeaderContainer>
+                ) : (
+                    <HeaderContainer className="header">
+                        <LogoWrapper className='logoWrapper'>
+                            <Image src={OmegleLogo} alt="Omegle Logo" />
+                            <HeaderText className='rotatedText'>Talk to strangers!</HeaderText>
+                        </LogoWrapper>
 
-        </HeaderContainer >
+                        <HeaderRight>
+                            {/* <ButtonsGroup>
+                                <Button style={{ background: "#4A549A" }}><FaFacebookF />
+                                    Share</Button>
+                                <Button style={{ background: "#728EC5" }}><FaTwitter />
+                                    Tweet</Button>
+                                <SelectButton>
+                                    <FcGoogle />
+                                    Choose a language
+                                    <FaSortDown />
+                                </SelectButton>
+                            </ButtonsGroup> */}
+                            <LiveUsersWrapper>
+                                {
+                                    user && <Button onClick={handleLogout}><TbLogout size={24} /></Button>
+                                }
+                                {/* <LiveUsersNumber>{onlineUsers.length} +</LiveUsersNumber>
+                                <LiveUsersText>Live users</LiveUsersText> */}
+                            </LiveUsersWrapper>
+                        </HeaderRight>
+
+                    </HeaderContainer>
+                ) 
+            }
+        </Fragment>
     )
 }
 
@@ -56,6 +109,12 @@ const HeaderContainer = styled.div({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center"
+})
+
+const NavWrapper = styled.ul({
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
 })
 
 const LogoWrapper = styled.div({
@@ -84,16 +143,18 @@ const ButtonsGroup = styled.div({
     gap: "10px"
 })
 
-// const Button = styled.button({
-//     fontSize: "10px",
-//     color: "white",
-//     background: "#4A549A",
-//     border: "none",
-//     borderRadius: "2px",
-//     display: "flex",
-//     gap: "5px",
-//     alignItems: "center"
-// })
+const Button = styled.button({
+    fontSize: "10px",
+    color: "white",
+    background: "#4A549A",
+    border: "none",
+    borderRadius: "2px",
+    display: "flex",
+    gap: "5px",
+    alignItems: "center",
+    padding: '5px',
+    borderRadius: '50px'
+})
 
 // const SelectButton = styled.button({
 //     padding: "2px 10px",

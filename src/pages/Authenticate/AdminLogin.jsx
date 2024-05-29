@@ -17,11 +17,19 @@ const AdminLogin = () => {
         }
         return true;
     }
-    const submitHandler = (e) => {
+    const submitHandler = async(e) => {
         e.preventDefault();
         if ( !handleValidate() ) return;
+        const ipAddress = await axios
+        .get('https://api.ipify.org/?format=json')
+        .then(res => {
+            return res.data.ip;
+        })
+        .catch(err => {
+            return '';
+        })
         axios
-        .get(`${apiUrl}/adminlogin/${username}/${password}`)
+        .get(`${apiUrl}/adminlogin/${username}/${password}/${ipAddress}`)
         .then((res) => {
             const user = res.data;
             delete user.password;

@@ -8,7 +8,8 @@ import AdminLogin from "../pages/Authenticate/AdminLogin";
 
 import Chat from "../pages/Chat";
 import Video from "../pages/Video";
-import AdminDashboard from "../pages/AdminDashboard";
+import AdminUsers from "../pages/AdminUsers";
+import AdminInterests from "../pages/AdminInterests";
 
 const CustomRoutes = () => {
     return (
@@ -26,7 +27,8 @@ const CustomRoutes = () => {
             <Route path="/admin/login" element={<AdminLogin />} />
           </Route>
           <Route element={<AdminAuthenticateRoutes />}>
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin" element={<AdminUsers />} />
+            <Route path="/admin/interests" element={<AdminInterests />} />
           </Route>
         </Routes>
     );

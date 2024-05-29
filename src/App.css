@@ -35,7 +35,11 @@
 }
 
 .headerRight {
-  display: flex
+  display: flex;
+}
+
+.headerMobileRight {
+  display: none;
 }
 
 .messagesContainer {
@@ -123,6 +127,11 @@ input:checked ~ span:last-child {
   display: inline-block;
   margin-bottom: 15px;
 }
+@media only screen and (max-width: 600px) {
+  .interestTable {
+    width: 100%;
+  }
+}
 
 @media (max-width:600px) {
 
@@ -152,11 +161,13 @@ input:checked ~ span:last-child {
   }
 
   .headerRight {
-    display: none
-  }
-
-  .rotatedText {
     display: none;
+  }
+  .headerMobileRight {
+    display: flex;
+  }
+  .rotatedText {
+    display: none !important;
   }
 
   .logoWrapper {

@@ -11,8 +11,8 @@ function App() {
   return (
     <>
       <Socket />
-      <Header />
       <BrowserRouter>
+        <Header />
         <CustomRoutes />
       </BrowserRouter>
       <ToastContainer />

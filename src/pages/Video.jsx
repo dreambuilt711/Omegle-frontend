@@ -58,7 +58,7 @@ const Video = () => {
           socket.emit('answerCall', { signal: data, to: receiver.socketId});
         });
         peer.on('stream', (currentStream) => {
-            if (userVideo.current.srcObject) userVideo.current.srcObject = currentStream;
+            userVideo.current.srcObject = currentStream;
         });
         peer.on('close', () => {
             socket.off("callAccepted");

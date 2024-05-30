@@ -5,13 +5,12 @@ import html2canvas from 'html2canvas';
 import styled from 'styled-components';
 
 const Messages = () => {
-    const { user, userId, isSearching, interests, chatType, setIsSearching, receiver, messages, setMessages, isTyping } = useChat()
+    const { userId, isSearching, interests, chatType, setIsSearching, receiver, messages, setMessages, isTyping } = useChat()
 
     const newChat = () => {
         setIsSearching(true)
         setMessages([])
-        console.log(user);
-        socket.emit("pairing-user", userId, user.interest, chatType, interests, (error) => {
+        socket.emit("pairing-user", userId, chatType, interests, (error) => {
             if (error) {
                 return alert(error);
             }

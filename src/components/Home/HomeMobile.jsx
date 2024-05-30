@@ -1,11 +1,50 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import axios from 'axios';
 import styled from 'styled-components'
 import { useChat } from '../../contextApi/ChatContext';
+import { apiUrl } from '../../constant/constant';
 
 const HomeMobile = ({ setIsTermsModal }) => {
-    const {setInterests} = useChat()
+    const {setUser, setInterests} = useChat()
+    const dropdownRef = useRef();
+    const interestRef = useRef();
+    const [dropdown, setDropdown] = useState(false);
+    const [selectedInterest, setSelectedInterest] = useState({});
+    const [interestsItem, setInterestsItem] = useState([]);
     const [setIsModal, setIsModalVideo] = setIsTermsModal;
 
+    const selectTag = (item) => {
+        setSelectedInterest(item);
+        setInterests(item.text);
+        setDropdown(false);
+    }
+    const toogleDropdown = () => {
+        setDropdown(!dropdown)
+    };
+
+    useEffect(() => {
+        const user = sessionStorage.getItem('logged_user');
+        if ( user ) {
+            setUser(JSON.parse(user));
+        }
+        axios
+        .get(`${apiUrl}/get_all_interests`)
+        .then((res) => {
+            setInterestsItem(res.data)
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target) && !interestRef.current.contains(event.target)) {
+              setDropdown(false);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    },[])
     return (
         <MobileHome className='mobileHome'>
             <VideoDescText>Mobile video chat is an experimental new feature. Video is monitored, so keep it clean!
@@ -16,9 +55,45 @@ const HomeMobile = ({ setIsTermsModal }) => {
                 <Button className='videoBtn' onClick={() => setIsModalVideo(true)}>video</Button>
             </ButtonWrapper>
 
-            <div>
+            <div className='relative'>
                 <InputLabel>Meet strangers with your interests!</InputLabel>
-                <Input type="text" placeholder='Add your interests (optional)' onChange={(e) => setInterests(e.target.value)} />
+                {
+                    dropdown? (
+                        <div ref={dropdownRef} className="absolute shadow w-full bg-white z-40 lef-0 rounded max-h-select overflow-y-auto border border-inherit" style={{top:'52px'}}>
+                            <div className="flex flex-col w-full">
+                                { interestsItem.map((item, key) => (
+                                    <div key={key} className="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-[#fb923c]" onClick={() => selectTag(item)}>
+                                        <div className="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative hover:border-[#fb923c]">
+                                            <div className="w-full items-center flex">
+                                                <div className="mx-2 leading-6">
+                                                    { item.text }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ) : null
+                }
+                <div className="flex flex-col items-center" ref={interestRef}>
+                    <div className="w-full ">
+                        <div className="my-2 p-1 flex border border-gray-200 bg-white rounded-md">
+                            <div className="flex flex-auto flex-wrap">
+                                <div className="flex-1" onClick={toogleDropdown}>
+                                    <input placeholder="" value={selectedInterest.text?selectedInterest.text:''} readOnly className="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800"/>
+                                </div>
+                            </div>
+                            <div className="text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200" onClick={toogleDropdown}>
+                                <div className="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-up w-4 h-4">
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <CollegeStudentBox>

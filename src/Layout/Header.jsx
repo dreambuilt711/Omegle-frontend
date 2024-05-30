@@ -13,6 +13,9 @@ const Header = () => {
     const { user, setUser, onlineUsers, receiver, setIsTyping, setMessage, setReceiver } = useChat()
     const [admin, setAdmin] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isRegister, setIsRegister] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+
     useEffect(() => {
         if (receiver?.socketId !== undefined && !onlineUsers.find((user) => user._id === receiver?.socketId)) {
             setIsTyping(false)
@@ -25,6 +28,8 @@ const Header = () => {
         const pathname = new URL(url).pathname;
         const segment = pathname.split('/')[1];
         if ( segment === 'admin' ) setIsAdmin(true);
+        else if (segment === 'register') setIsRegister(true);
+        else setIsLogin(true);
         const tmpAdmin = window.sessionStorage.getItem('admin_user');
         if (tmpAdmin) setAdmin(tmpAdmin);
     },[])
@@ -88,6 +93,12 @@ const Header = () => {
                             <LiveUsersWrapper>
                                 {
                                     user && <Button onClick={handleLogout}><TbLogout size={24} /></Button>
+                                }
+                                {
+                                    !user && isLogin && <AuthButton><a href="/register">Join Now</a></AuthButton>
+                                }
+                                {
+                                    !user && isRegister && <AuthButton><a href="/login">Log In</a></AuthButton>
                                 }
                                 {/* <LiveUsersNumber>{onlineUsers.length} +</LiveUsersNumber>
                                 <LiveUsersText>Live users</LiveUsersText> */}
@@ -154,6 +165,16 @@ const Button = styled.button({
     alignItems: "center",
     padding: '5px',
     borderRadius: '50px'
+})
+
+const AuthButton = styled.button({
+    color: "#ff8100",
+    border: "none",
+    borderRadius: "2px",
+    display: "flex",
+    gap: "5px",
+    alignItems: "center",
+    padding: '10px',
 })
 
 // const SelectButton = styled.button({

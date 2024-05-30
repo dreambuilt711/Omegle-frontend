@@ -1,20 +1,15 @@
 import { Link } from "react-router-dom"
 import "flatpickr/dist/themes/material_green.css";
 import Flatpickr from "react-flatpickr"
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { toast } from 'react-toastify';
 import axios from "axios";
 import { apiUrl } from "../../constant/constant";
 
 const Register = () => {
-    const dropdownRef = useRef();
-    const interestRef = useRef();
     const [fullname, setFullname] = useState('');
     const [email, setEmail] = useState('');
-    const [interests, setInterests] = useState([]);
-    const [selectedInterests, setSelectedInterests] = useState([]);
-    const [dropdown, setDropdown] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [newdate, setNewdate] = useState('');
@@ -46,7 +41,6 @@ const Register = () => {
     }
     const submitHandler = async(e) => {
         e.preventDefault();
-        const interestText = selectedInterests.map(item => item.text).join(',');
         if ( !handleValidate() ) return;
         const ipAddress = await axios
         .get('https://api.ipify.org/?format=json')
@@ -61,7 +55,6 @@ const Register = () => {
             email: email,
             birthday: newdate,
             gender: gender,
-            interest: interestText,
             username: username,
             password, password,
             last_login_ip: ipAddress
@@ -111,39 +104,6 @@ const Register = () => {
                 break;
         }
     }
-    const addTag = (item) => {
-        const sel = selectedInterests.find((one) => one._id === item._id);
-        if (sel) return;
-        setSelectedInterests([...selectedInterests, item]);
-    }
-    const removeTag = (_id) => {
-        const tmpSelectedInterests = selectedInterests.filter((item) => item._id !== _id);
-        setSelectedInterests(tmpSelectedInterests);
-    }
-    const toogleDropdown = () => {
-        setDropdown(!dropdown)
-    };
-    useEffect(() => {
-        axios
-        .get(`${apiUrl}/get_all_interests`)
-        .then((res) => {
-            setInterests(res.data)
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-    },[])
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target) && !interestRef.current.contains(event.target)) {
-              setDropdown(false);
-            }
-        };
-        document.addEventListener('click', handleClickOutside);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    },[])
     return (
         <div className="authincation h-100 p-meddle">
             <div className="container">
@@ -249,63 +209,6 @@ const Register = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="form-group relative">
-                                                <label className="mb-1 ">
-                                                    <strong>Interest</strong>
-                                                </label>
-                                                <div className="flex flex-col items-center" ref={interestRef}>
-                                                    <div className="w-full ">
-                                                        <div className="my-2 p-1 flex border border-gray-200 bg-white rounded-md">
-                                                            <div className="flex flex-auto flex-wrap">
-                                                                {
-                                                                    selectedInterests.map((tag, index) => {
-                                                                        return (
-                                                                            <div key={index} className="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-full text-orange-500 border border-orange-300 ">
-                                                                                <div className="text-xs font-normal leading-none max-w-full flex-initial">{ tag.text }</div>
-                                                                                <div className="flex flex-auto flex-row-reverse">
-                                                                                    <div onClick={() => removeTag(tag._id)}>
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-x cursor-pointer hover:text-orange-400 rounded-full w-4 h-4 ml-2">
-                                                                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                                                                        </svg>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div className="flex-1" onClick={toogleDropdown}>
-                                                                    <input placeholder="" readOnly className="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800"/>
-                                                                </div>
-                                                            </div>
-                                                            <div className="text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200" onClick={toogleDropdown}>
-                                                                <div className="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-up w-4 h-4">
-                                                                        <polyline points="18 15 12 9 6 15"></polyline>
-                                                                    </svg>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                { dropdown  ? (
-                                                    <div ref={dropdownRef} id="dropdown" className="absolute shadow w-full bg-white z-40 lef-0 rounded max-h-select overflow-y-auto" style={{top:'74px'}}>
-                                                        <div className="flex flex-col w-full">
-                                                            { interests.map((item, key) => (
-                                                                <div key={key} className="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-[#fb923c]" onClick={() => addTag(item)}>
-                                                                    <div className="flex w-full items-center p-2 pl-2 border-transparent border-l-2 relative hover:border-[#fb923c]" >
-                                                                        <div className="w-full items-center flex">
-                                                                            <div className="mx-2 leading-6">
-                                                                                { item.text }
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                ): null }
                                             </div>
                                             <div className="form-group">
                                                 <label className="mb-1">

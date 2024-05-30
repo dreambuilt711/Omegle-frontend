@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const MessageInput = () => {
-    const { user, userId, chatType, interests, onlineUsers, isSearching, setIsSearching, receiver, setReceiver, setMessages, isSending, setIsSending, message, setMessage, setIsTyping } = useChat()
+    const { userId, chatType, interests, onlineUsers, isSearching, setIsSearching, receiver, setReceiver, setMessages, isSending, setIsSending, message, setMessage, setIsTyping } = useChat()
 
     const newChat = () => {
         setIsSearching(true)
         setMessages([])
         setIsSending(false)
-        socket.emit("pairing-user", userId, user.interest, chatType, interests, (error) => {
+        socket.emit("pairing-user", userId, chatType, interests, (error) => {
             console.log(error);
             return
         })
